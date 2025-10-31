@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\ArtistController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\CategoryController;
 
 
 Route::get('/', function () {
@@ -18,3 +19,13 @@ Route::controller(ArtistController::class)->group(function () {
     Route::delete('/artist/{artist}', 'destroy')->name('artists.destroy');
 });
 
+
+Route::controller(CategoryController::class)->group(function() {
+    Route::get('/categories','index')->name('categories.index');
+    Route::get('/categories/create', 'create')->name('categories.create');
+    Route::post('/categories', 'store')->name('categories.store');
+    Route::get('/categories/{category}', 'show')->name('categories.show');
+    Route::get('/categories/{category}/edit', 'edit')->name('categories.edit');
+    Route::patch('/categories/{category}', 'update')->name('categories.update');
+    Route::delete('/categories/{category}', 'destroy')->name('categories.destroy');
+});
