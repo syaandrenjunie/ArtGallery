@@ -9,8 +9,10 @@
 
 <li class="flex justify-between gap-x-6 py-5">
   <a href="{{ $link }}" class="flex min-w-0 gap-x-4 w-full hover:bg-gray-50 rounded-md transition">
-    <img src="{{ $image ?? 'https://via.placeholder.com/150' }}" 
-         class="size-12 flex-none rounded-full bg-gray-100" />
+    
+    @if ($image)
+      <img src="{{ $image }}" class="size-12 flex-none rounded-full bg-gray-100" />
+    @endif
 
     <div class="min-w-0 flex-auto">
       <p class="text-sm/6 font-semibold text-gray-900">{{ $title }}</p>

@@ -32,6 +32,9 @@
                                 <x-nav-link href="{{ route('artists.index') }}" :active="request()->is('artists')">
                                     Artists
                                 </x-nav-link>
+                                <x-nav-link href="{{ route('categories.index') }}" :active="request()->is('categories')">
+                                    Category
+                                </x-nav-link>
                                 <x-nav-link href="/artworks" :active="request()->is('artworks')">Artwork</x-nav-link>
 
                             </div>

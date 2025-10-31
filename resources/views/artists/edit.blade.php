@@ -105,21 +105,18 @@
         <div class="mt-6 flex items-center justify-between gap-x-6">
             <div class="flex items-center gap-x-6">
 
-<button 
-    form="delete-form" 
-    class="text-red-500 text-sm font-bold"
-    onclick="return confirm('Are you sure you want to delete this artist?')"
->
-    Delete
-</button>
+                <button form="delete-form" class="text-red-500 text-sm font-bold"
+                    onclick="return confirm('Are you sure you want to delete this artist?')">
+                    Delete
+                </button>
 
 
             </div>
             <div class="flex items-center gap-x-6">
 
                 <a href="/artists/{{  $artist->id }}/" type="button"
-                    class="text-sm/6 font-semibold text-gray-900">Cancel</a>                
-                        
+                    class="text-sm/6 font-semibold text-gray-900">Cancel</a>
+
                 <button type="submit"
                     class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     Save</button>
@@ -130,12 +127,13 @@
 
         </div>
     </form>
+    
     <!--if in forms we have another form then create the second form after first form and call the id at the selected button-->
     <!--delete form-->
-<form method="POST" action="{{ route('artists.destroy', $artist) }}" id="delete-form" class="hidden">
+    <form method="POST" action="{{ route('artists.destroy', $artist) }}" id="delete-form" class="hidden">
         @csrf
         @method('DELETE')
-    </form> 
+    </form>
 
 
 </x-layout>
