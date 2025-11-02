@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArtworkController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\CategoryController;
@@ -28,4 +29,15 @@ Route::controller(CategoryController::class)->group(function() {
     Route::get('/categories/{category}/edit', 'edit')->name('categories.edit');
     Route::patch('/categories/{category}', 'update')->name('categories.update');
     Route::delete('/categories/{category}', 'destroy')->name('categories.destroy');
+});
+
+Route::controller(ArtworkController::class)->group(function() {
+    Route::get('/artworks','index')->name('artworks.index');
+    Route::get('/artworks/create', 'create')->name('artworks.create');
+    Route::post('/artworks', 'store')->name('artworks.store');
+    Route::get('/artworks/{artwork}', 'show')->name('artworks.show');
+Route::get('/artworks/{artwork}/edit', 'edit')->name('artworks.edit');
+    Route::patch('/artworks/{artwork}', 'update')->name('artworks.update');
+    Route::delete('/artworks/{artwork}', 'destroy')->name('artworks.destroy');
+   
 });
