@@ -9,12 +9,11 @@ class ArtistController extends Controller
 {
     public function index(){
 
-        $artists = Artist::latest('updated_at')->paginate(5);
+        $artists = Artist::latest('updated_at')->simplePaginate(10);
 
         return view('artists.index', [
             'artists' => $artists
         ]);
-
 
     }
 
@@ -23,7 +22,7 @@ class ArtistController extends Controller
         return view('artists.create');
     }
 
-    public function store() {
+    public function store(Request $request) {
 
         //validation
         request()->validate( [

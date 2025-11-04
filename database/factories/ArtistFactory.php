@@ -18,6 +18,9 @@ class ArtistFactory extends Factory
     public function definition(): array
     {
 
+        $faker = \Faker\Factory::create();
+        $faker->addProvider(new \Smknstd\FakerPicsumImages\FakerPicsumImagesProvider($faker));
+        
         $name = fake()->name();
 
         return [
@@ -25,8 +28,8 @@ class ArtistFactory extends Factory
             'bio' => fake()->sentence(),
             'email' => Str::slug($name, '.') . '@' . fake()->freeEmailDomain(),
             'contact' => fake()->phoneNumber(),
-            'picture' => fake()->imageUrl(400, 400, 'people', true), 
-                // random image URL
+            'picture' => $faker->imageUrl(150,150)
+
 
 
         ];
