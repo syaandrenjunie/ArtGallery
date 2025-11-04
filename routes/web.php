@@ -20,15 +20,15 @@ Route::controller(ArtistController::class)->group(function () {
     Route::delete('/artist/{artist}', 'destroy')->name('artists.destroy');
 });
 
-
-Route::controller(CategoryController::class)->group(function() {
-    Route::get('/categories','index')->name('categories.index');
-    Route::get('/categories/create', 'create')->name('categories.create');
-    Route::post('/categories', 'store')->name('categories.store');
-    Route::get('/categories/{category}', 'show')->name('categories.show');
-    Route::get('/categories/{category}/edit', 'edit')->name('categories.edit');
-    Route::patch('/categories/{category}', 'update')->name('categories.update');
-    Route::delete('/categories/{category}', 'destroy')->name('categories.destroy');
+Route::controller(CategoryController::class)->name('categories.')->prefix('categories')->group(function() {
+    Route::get('/','index')->name('index');
+    Route::get('/create', 'create')->name('create');
+    Route::post('/', 'store')->name('store');
+    Route::get('/{category}', 'show')->name('show');
+    Route::get('/{category}/edit', 'edit')->name('edit');
+    Route::patch('/{category}', 'update')->name('update');
+    Route::delete('/{category}', 'destroy')->name('destroy');
+    
 });
 
 Route::controller(ArtworkController::class)->group(function() {
@@ -36,7 +36,7 @@ Route::controller(ArtworkController::class)->group(function() {
     Route::get('/artworks/create', 'create')->name('artworks.create');
     Route::post('/artworks', 'store')->name('artworks.store');
     Route::get('/artworks/{artwork}', 'show')->name('artworks.show');
-Route::get('/artworks/{artwork}/edit', 'edit')->name('artworks.edit');
+    Route::get('/artworks/{artwork}/edit', 'edit')->name('artworks.edit');
     Route::patch('/artworks/{artwork}', 'update')->name('artworks.update');
     Route::delete('/artworks/{artwork}', 'destroy')->name('artworks.destroy');
    
