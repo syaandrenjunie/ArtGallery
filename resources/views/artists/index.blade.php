@@ -6,11 +6,13 @@
             {{ __('Artists Listing') }}
         </h2>
 
+        @role('admin')
         <a href="{{ route('artists.create') }}">
             <x-primary-button>
                 + Create Artist
             </x-primary-button>
         </a>
+        @endrole
 
     </div>
 

@@ -18,6 +18,7 @@
         <p>{{ $artist->contact}}</p>
 
 
+        @role('admin')
         <p class="mt-6">
             <a href="{{ route('artists.edit', $artist->id) }}">
                 <x-primary-button>
@@ -25,6 +26,7 @@
                 </x-primary-button>
             </a>
         </p>
+        @endrole
 
     </x-card-container>
 
