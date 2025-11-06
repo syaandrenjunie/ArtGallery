@@ -40,7 +40,6 @@ class ArtworkController extends Controller
 
     public function store(Request $request)
     {
-
         //validation
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -51,12 +50,12 @@ class ArtworkController extends Controller
         ]);
 
         //create
-
         $path = null;
         if ($request->hasFile('picture')) {
             // Store file in /storage/app/public/uploads
             $path = $request->file('picture')->store('uploads', 'public');
         }
+
         Artwork::create([
             'title' => request('title'),
             'price' => request('price'),
@@ -72,7 +71,8 @@ class ArtworkController extends Controller
 
     public function show(Artwork $artwork)
     {
-        return view('artworks.show', data: ['artwork' => $artwork]);
+        return view('artworks.show', data: [
+            'artwork' => $artwork]);
     }
 
     public function edit(Artwork $artwork)
@@ -84,7 +84,6 @@ class ArtworkController extends Controller
         return view('artworks.edit', compact
         ('artwork', 'artists', 'categories'));
     }
-
 
     public function update(Artwork $artwork)
     {
@@ -118,10 +117,10 @@ class ArtworkController extends Controller
         $artwork->artist_id = request('artist_id');
         $artwork->category_id = request('category_id');
 
-        // Persist to DB
+        //persist
         $artwork->save();
 
-        // Redirect
+        //redirect
         return redirect('/artworks/' . $artwork->id)
             ->with('success', 'Artwork updated successfully!');
     }
