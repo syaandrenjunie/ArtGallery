@@ -1,18 +1,25 @@
-<x-layout>
-    <x-slot:heading>
-       Category Details: {{ $category['name'] }} 
-    </x-slot:heading>
-    
+<x-app-layout>
+   <x-slot name="header">
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+         {{ $category->name }}
+      </h2>
+   </x-slot>
 
-    <h2 class="text-lg font-bold">{{ $category->name }}</h2>
+   <x-card-container>
+      <h2 class="text-lg font-bold">{{ $category->name }}</h2>
 
-    <p>{{ $category->description }}</p>
+      <p>{{ $category->description }}</p>
 
-    <p class="mt-6">
-       <x-button href="{{ route('categories.edit', $category) }}">
-            Edit Category</x-button>
-    </p>
+      <p class="mt-6">
+         <a href="{{ route('categories.edit', $category->id) }}">
+            <x-primary-button>
+               Edit Category
+            </x-primary-button>
+         </a>
+      </p>
+
+   </x-card-container>
 
 
-</x-layout>
 
+</x-app-layout>
