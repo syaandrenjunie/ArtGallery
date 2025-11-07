@@ -1,7 +1,23 @@
-<x-layout>
-  <x-slot:heading>
-    Artworks
-  </x-slot:heading>
+<x-app-layout>
+  
+  <x-slot name="header">
+        <div class="flex justify-between items-center w-full">
+
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Artworks Listing') }}
+        </h2>
+
+        @role('admin')
+        <a href="{{ route('artworks.create') }}">
+            <x-primary-button>
+                + Create Artwork
+            </x-primary-button>
+        </a>
+        @endrole
+
+    </div>
+
+    </x-slot>
 
   <x-slot:resource>artworks</x-slot:resource>
 
@@ -35,4 +51,4 @@
         {{ $artworks->links() }}
       </div>
     </div>
-</x-layout>
+</x-app-layout>

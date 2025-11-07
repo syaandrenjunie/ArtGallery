@@ -1,11 +1,14 @@
-<x-layout>
-  <x-slot:heading>
-    {{ $artwork['title'] }}
-  </x-slot:heading>
+<x-app-layout>
+  <x-slot name="header">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+      {{ $artwork->title }}
+    </h2>
+  </x-slot>
+
   <x-slot:resource>artworks</x-slot:resource>
 
   <div class="bg-white">
-    <div class="pt-4">
+    <div class="pt-4 ">
 
 
       <!-- Dynamic artwork image -->
@@ -28,26 +31,34 @@
           <h2 class="sr-only">Product information</h2>
           <p class="text-3xl tracking-tight text-gray-900">RM {{ $artwork->price }}</p>
 
+          @role('user')
+          <p class = "mt-6">
+            <x-edit-button>Add To Cart</x-edit-button>
+          </p>
 
+          <x-danger-button>Buy Now</x-danger-button>
+          @endrole
 
-         <a href="{{ route('artworks.edit', $artwork) }}"
-            class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent 
-                    bg-green-600 px-8 py-3 text-base font-medium text-white 
-                    hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-hidden">
-            Edit artwork
-          </a>
+          @role('admin')
+          <p class="mt-6">
+            <a href="{{ route('artworks.edit', $artwork->id) }}">
+              <x-edit-button>
+                Edit Artwork
+              </x-edit-button>
+            </a>
+          </p>
 
-          <form action="{{ route('artworks.destroy', $artwork) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this artwork?');">
-    @csrf
-    @method('DELETE')
+          <form action="{{ route('artworks.destroy', $artwork) }}" method="POST"
+            onsubmit="return confirm('Are you sure you want to delete this artwork?');">
+            @csrf
+            @method('DELETE')
 
-    <button type="submit"
-        class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent 
-               bg-red-600 px-8 py-3 text-base font-medium text-white 
-               hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-hidden">
-        Delete artwork
-    </button>
-</form>
+            <x-danger-button class="mt-6">
+              Delete artwork
+            </x-danger-button>
+
+          </form>
+          @endrole
 
 
         </div>
@@ -82,6 +93,6 @@
     </div>
   </div>
 
-  
 
-</x-layout>
+
+</x-app-layout>
