@@ -17,6 +17,22 @@ class ArtistController extends Controller
 
     }
 
+    /* JSON API
+    public function apiIndex() {
+        $artists = Artist::latest('updated_at')->paginate(10);
+
+        return response()->json([
+            'data' => $artists->items(),
+            'current_page' => $artists->currentPage(),
+            'last_page' => $artists->lastPage(),
+            'per_page' => $artists->perPage(),
+            'total' => $artists->total(),
+        ]); 
+    }
+    */
+
+    
+
     public function create() {
         
         return view('artists.create');
