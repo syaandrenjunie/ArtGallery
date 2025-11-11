@@ -40,8 +40,8 @@ Route::prefix('artists')->name('artists.')->controller(ArtistController::class)-
 
 });
 
+Route::prefix('categories')->name('categories.')->middleware(['auth', 'role:admin'])->controller(CategoryController::class)->group(function () {
 
-Route::controller(CategoryController::class)->name('categories.')->prefix('categories')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/create', 'create')->name('create');
     Route::post('/', 'store')->name('store');
@@ -52,15 +52,29 @@ Route::controller(CategoryController::class)->name('categories.')->prefix('categ
 
 });
 
-Route::controller(ArtworkController::class)->group(function () {
-    Route::get('/artworks', 'index')->name('artworks.index');
-    Route::get('/artworks/create', 'create')->name('artworks.create');
-    Route::post('/artworks', 'store')->name('artworks.store');
-    Route::get('/artworks/{artwork}', 'show')->name('artworks.show');
-    Route::get('/artworks/{artwork}/edit', 'edit')->name('artworks.edit');
-    Route::patch('/artworks/{artwork}', 'update')->name('artworks.update');
-    Route::delete('/artworks/{artwork}', 'destroy')->name('artworks.destroy');
 
+Route::prefix('artworks')->name('artworks.')->controller(ArtworkController::class)->group(function () {
+
+    // Only Admin can create / edit / delete
+    Route::middleware(['auth', 'role:admin'])->group(function () {
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{artwork}/edit', 'edit')->name('edit');
+        Route::patch('/{artwork}', 'update')->name('update');
+        Route::delete('/{artwork}', 'destroy')->name('destroy');
+    });
+
+     // Everyone must be logged in to view artworks
+    Route::middleware('auth')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{artwork}', 'show')->name('show');
+    });
+
+
+});
+
+Route::get('/carts', function () {
+    return view('carts.index');
 });
 
 require __DIR__ . '/auth.php';
