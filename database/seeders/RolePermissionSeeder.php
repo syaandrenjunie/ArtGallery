@@ -5,36 +5,47 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class RolePermissionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //create roles
-        $admin =  Role::firstOrCreate(['name' => 'admin']);
+        // create roles
+        $admin = Role::firstOrCreate(['name' => 'admin']);
         $user = Role::firstOrCreate(['name' => 'user']);
 
-        //create permission list
-        $permissions =  [
+
+        // permissions for artist module
+        $artistPermissions = [
             'create artist',
             'edit artist',
             'delete artist',
-            'view artist'
+            'view artist',
         ];
 
-        //create permission in db
+        // permissions for artwork module
+        $artworkPermissions = [
+            'create artwork',
+            'edit artwork',
+            'delete artwork',
+            'view artwork',
+        ];
+
+        // merge both permission groups
+        $permissions = array_merge($artistPermissions, $artworkPermissions);
+
+        // create permissions in DB
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
         }
 
-        //give all permissions to admin
+        // admin gets all permissions
         $admin->givePermissionTo($permissions);
 
-        //give only view permission to normal user
-        $user->givePermissionTo(['view artist']);
+        // normal user can only *view* both artist and artwork
+        $user->givePermissionTo([
+            'view artist',
+            'view artwork',
+        ]);
     }
 }

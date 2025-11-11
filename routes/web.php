@@ -53,6 +53,7 @@ Route::prefix('categories')->name('categories.')->middleware(['auth', 'role:admi
 });
 
 
+
 Route::prefix('artworks')->name('artworks.')->controller(ArtworkController::class)->group(function () {
 
     // Only Admin can create / edit / delete
