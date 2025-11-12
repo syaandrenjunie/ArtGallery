@@ -9,8 +9,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
-<x-text-input type="text" id="searchName" placeholder="Search artist" class="mr-2" />
-                    <x-primary-button id="searchBtn">Search</x-primary-button>
+            <div id="vue-app"></div>
+            @vite(entrypoints: ['resources/css/app.css', 'resources/js/app.js'])
+
+
+                <x-text-input type="text" id="searchName" placeholder="Search artist" class="mr-2" />
+                <x-primary-button id="searchBtn">Search</x-primary-button>
+                
                 <!-- Artist List -->
                 <ul id="artistList" class="space-y-2 p-4"></ul>
 
