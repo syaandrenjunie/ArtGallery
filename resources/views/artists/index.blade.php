@@ -9,47 +9,30 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
-            <div id="vue-app"></div>
-            @vite(entrypoints: ['resources/css/app.css', 'resources/js/app.js'])
-
-
-                <x-text-input type="text" id="searchName" placeholder="Search artist" class="mr-2" />
-                <x-primary-button id="searchBtn">Search</x-primary-button>
+                <!-- Vue Component (Search Bar + Filtered Results) -->
+                <div id="vue-search"></div> 
                 
-                <!-- Artist List -->
-                <ul id="artistList" class="space-y-2 p-4"></ul>
+                <!-- Blade List (Initial Load) - Add ID for targeting -->
+                <div id="blade-artist-list">
+                    <x-stack-list>
+                        @foreach ($artists as $artist)
+                            <x-stack-item 
+                                :image="$artist->picture" 
+                                :title="$artist->name" 
+                                :subtitle="$artist->email"
+                                :description="$artist->bio" 
+                                :footer="$artist->contact" 
+                                :link="route('artists.show', $artist->id)" 
+                            />
+                        @endforeach
+                    </x-stack-list>
+
+                    <div class="mt-4">
+                        {{ $artists->links() }}
+                    </div>
+                </div>
 
             </div>
         </div>
     </div>
-
-    <script>
-        // Function to fetch and update the artist list
-        function loadArtists(url) {
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const list = document.getElementById('artistList');
-                    list.innerHTML = ''; // Clear previous list
-
-                    data.data.forEach(artist => {
-                        const li = document.createElement('li');
-                        li.textContent = `${artist.name} - ${artist.email}`;
-                        list.appendChild(li);
-                    });
-                })
-                .catch(error => console.error('Error fetching artists:', error));
-        }
-
-        // Initial load: all artists
-        loadArtists('{{ url("/api/artists") }}');
-
-        //
-        document.getElementById('searchBtn').addEventListener('click', function () {
-            const name = document.getElementById('searchName').value;
-            loadArtists(`{{ url('/api/artists') }}?name=${name}`);
-        });
-
-
-    </script>
 </x-app-layout>

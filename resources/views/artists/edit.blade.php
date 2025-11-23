@@ -10,11 +10,15 @@
 
     <x-card-container>
 
+
         <form method="POST" action="{{ route('artists.update', $artist) }}">
             @csrf
             @method('PATCH')
 
             <div class="space-y-8">
+
+                    <div id="vue-app"></div>
+
 
                 {{-- Name --}}
                 <div>
