@@ -17,10 +17,7 @@ class ArtistController extends Controller
         $query->where('name', 'like', '%' . $request->name . '%');
     }
 
-    // Filter by email containing @gmail.com
-    if ($request->has('email_provider') && $request->email_provider == 'gmail') {
-        $query->where('email', 'like', '%@gmail.com');
-    }
+
 
     // Sorting: default is updated_at desc
     $sortField = $request->get('sort', 'updated_at');
