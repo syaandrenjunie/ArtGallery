@@ -25,11 +25,22 @@
       <!-- Vue Component (Search Bar + Filtered Results) -->
       <div id="vue-artwork-search" class="mt-4"></div> 
 
-      <!-- Blade Grid (Initial Load) - Add ID for Vue to target -->
+      <!-- Blade Grid (Initial Load) -->
       <div id="blade-artwork-grid">
           <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-4">
             @foreach ($artworks as $artwork)
               <div class="group relative">
+                
+                <!-- Favorite Button (only for logged-in users) -->
+                @auth
+                  <div class="absolute top-2 right-2 z-10 favorite-button-mount"
+                       data-artwork-id="{{ $artwork->id }}"
+                       data-is-favorited="{{ auth()->user()->hasFavorited($artwork->id) ? 'true' : 'false' }}"
+                       data-favorites-count="{{ $artwork->favoritesCount() }}"
+                       data-size="md">
+                  </div>
+                @endauth
+
                 <img
                   src="{{ Str::startsWith($artwork->picture, 'http') ? $artwork->picture : asset('storage/' . $artwork->picture) }}"
                   alt="{{ $artwork->title }}"

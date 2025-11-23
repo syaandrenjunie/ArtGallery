@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -46,5 +47,19 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    //Relationships
+
+    public function favorites() {
+        return $this->belongsToMany(Artwork::class, 'favorites')->withTimestamps();
+    }
+
+
+    //Helper method
+    
+    public function hasFavorited($artworkId) {
+        return $this->favorites()->where('artwork_id', $artworkId)->exists();
+        //to check if user favorited an artwork
     }
 }

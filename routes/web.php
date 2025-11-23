@@ -74,6 +74,10 @@ Route::prefix('artworks')->name('artworks.')->controller(ArtworkController::clas
 
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/favorites', [ArtworkController::class, 'favorites'])->name('favorites.index');
+});
+
 Route::get('/carts', function () {
     return view('carts.index');
 });

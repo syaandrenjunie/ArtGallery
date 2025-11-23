@@ -133,4 +133,14 @@ class ArtworkController extends Controller
         //redirect
         return redirect('/artworks');
     }
+
+
+    public function favorites()
+{
+    $favorites = auth()->user()->favorites()
+                      ->with('artist')
+                      ->paginate(12);
+    
+    return view('artworks.favorites', compact('favorites'));
+}
 }
