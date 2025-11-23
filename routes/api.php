@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ArtworkController;
 use App\Http\Controllers\API\ArtistController;
 
 Route::get('/user', function (Request $request) {
@@ -9,8 +10,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->get('/artists', [ArtistController::class, 'index']);
-Route::get('/artists/{id}', [ArtistController::class, 'show']);
-Route::get('/artists/search', [ArtistController::class, 'search']);
-Route::get('/artists/gmail', [ArtistController::class, 'gmail']);
+
+Route::middleware('auth:sanctum')->get('/artworks', [ArtworkController::class, 'index']);
 
 
