@@ -1,0 +1,3 @@
+<div>
+    hELLO {{ $name }}
+</div>

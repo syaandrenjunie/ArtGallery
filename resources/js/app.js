@@ -1,9 +1,5 @@
 import './bootstrap';
 
-//Alpine setup
-import Alpine from 'alpinejs';
-window.Alpine = Alpine;
-Alpine.start();
 
 // Vue Setup
 import { createApp } from 'vue'
