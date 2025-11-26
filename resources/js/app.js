@@ -8,14 +8,14 @@ Alpine.start();
 // Vue Setup
 import { createApp } from 'vue'
 
-//Import Vue components
+//Import Vue components (Registration)
 import ArtistSearch from './components/artists/ArtistSearch.vue'
 import ArtworkSearch from './components/artworks/ArtworkSearch.vue'
 import FavoriteButton from './components/artworks/FavoriteButton.vue'
 
 // Wait for DOM to be ready
 window.addEventListener('load', () => {
-    // Mount Artist Search
+    // Mount Artist Search -  use if cause it is single element / Need if to check if exits
     const artistSearchEl = document.querySelector('#vue-search')
     if (artistSearchEl) {
         createApp(ArtistSearch).mount('#vue-search')
@@ -27,7 +27,8 @@ window.addEventListener('load', () => {
         createApp(ArtworkSearch).mount('#vue-artwork-search')
     }
 
-    // Mount individual Favorite Buttons (for Blade views)
+    // Favorite button
+    // use document cause we have many favorite button in one page / for sure exist
     document.querySelectorAll('.favorite-button-mount').forEach(el => {
         const artworkId = parseInt(el.dataset.artworkId)
         const isFavorited = el.dataset.isFavorited === 'true'
