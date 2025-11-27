@@ -11,8 +11,13 @@ class Search extends Component
 
     #[Validate('required')]
     public $searchText = '';
+    public $categories = '';
     public $results = [];
 
+    public function mount() 
+    {
+        $this->categories = Category::all();
+}
     public function updatedSearchText($value) {
         $this->reset('results');
 
@@ -26,7 +31,7 @@ class Search extends Component
     public function clear() {
         $this->reset('results', 'searchText');
     }
-    
+
     public function render()
     {
         return view('livewire.search');

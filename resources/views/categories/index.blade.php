@@ -24,13 +24,13 @@
 
     <livewire:search />
 
-    <x-stack-list>
+    <!-- <x-stack-list>
         @foreach ($categories as $category)
             <x-stack-item :title="$category->name" 
                 :description="$category->description"
                 :link="route('categories.show', $category->id)" />
         @endforeach
-    </x-stack-list>
+    </x-stack-list> -->
 
     <div class="mt-4">
         {{ $categories->links() }}
