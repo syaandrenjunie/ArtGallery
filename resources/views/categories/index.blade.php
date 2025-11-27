@@ -22,6 +22,8 @@
 
     <x-card-container>
 
+    <livewire:search />
+
     <x-stack-list>
         @foreach ($categories as $category)
             <x-stack-item :title="$category->name" 
