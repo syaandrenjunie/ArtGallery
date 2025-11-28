@@ -22,7 +22,7 @@
 
     <x-card-container>
 
-    <livewire:search />
+    <livewire:search placeholder="Search the categories"/>
 
     <!-- <x-stack-list>
         @foreach ($categories as $category)

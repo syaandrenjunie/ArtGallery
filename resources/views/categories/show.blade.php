@@ -5,6 +5,7 @@
       </h2>
    </x-slot>
 
+
    <x-card-container>
       <h2 class="text-lg font-bold">{{ $category->name }}</h2>
 

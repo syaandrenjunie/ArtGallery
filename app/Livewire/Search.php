@@ -4,31 +4,34 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Category;
-use Livewire\Attributes\Validate;
 
 class Search extends Component
 {
-
-    #[Validate('required')]
     public $searchText = '';
-    public $categories = '';
+    public $categories = [];
     public $results = [];
+    public $placeholder;
 
     public function mount() 
     {
         $this->categories = Category::all();
-}
-    public function updatedSearchText($value) {
+    }
+    
+    public function updatedSearchText($value) 
+    {
         $this->reset('results');
 
-        $this->validate();
+        if (empty(trim($value))) {
+            return;
+        }
 
         $searchTerm = "%{$value}%";
 
         $this->results = Category::where('name', 'LIKE', $searchTerm)->get();
     }
 
-    public function clear() {
+    public function clear() 
+    {
         $this->reset('results', 'searchText');
     }
 
