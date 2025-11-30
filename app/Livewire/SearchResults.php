@@ -15,6 +15,14 @@ class SearchResults extends Component
     
     public $categories = [];
 
+    public $isDropdownPage = false;
+
+public function mount()
+{
+    $this->isDropdownPage = !request()->routeIs('categories.index');
+}
+
+
     public function render()
     {
         return view('livewire.search-results');

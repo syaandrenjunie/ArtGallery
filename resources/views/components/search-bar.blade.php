@@ -1,4 +1,4 @@
-<div>
+<div class="flex items-center gap-2">
     <!-- Search Input -->
     <input
         type="text"

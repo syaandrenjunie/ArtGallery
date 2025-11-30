@@ -10,6 +10,8 @@
         </div>
 
     </form>
+
+   
     
 <livewire:search-results 
         :results="$results" 

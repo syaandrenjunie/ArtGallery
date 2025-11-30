@@ -12,12 +12,15 @@ class Search extends Component
     public $results = [];
     public $placeholder;
 
-    public function mount() 
+    public function mount()
     {
-        $this->categories = Category::all();
+        if (request()->routeIs('categories.index')) {
+            $this->categories = Category::all();
+        }
     }
-    
-    public function updatedSearchText($value) 
+
+
+    public function updatedSearchText($value)
     {
         $this->reset('results');
 
@@ -30,7 +33,7 @@ class Search extends Component
         $this->results = Category::where('name', 'LIKE', $searchTerm)->get();
     }
 
-    public function clear() 
+    public function clear()
     {
         $this->reset('results', 'searchText');
     }
