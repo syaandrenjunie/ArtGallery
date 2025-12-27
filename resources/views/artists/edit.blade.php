@@ -11,13 +11,12 @@
     <x-card-container>
 
 
-        <form method="POST" action="{{ route('artists.update', $artist) }}">
+        <form id="artist-edit-form" class="space-y-6">
             @csrf
-            @method('PATCH')
 
             <div class="space-y-8">
 
-                    <div id="vue-app"></div>
+                <div id="vue-app"></div>
 
 
                 {{-- Name --}}
@@ -62,7 +61,7 @@
                         <p class="text-xs text-red-500 font-semibold">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- {{-- Picture --}}
                 <div>
                     <x-input-label for="picture" class="block text-sm font-medium text-gray-900">Photo</x-input-label>
@@ -97,13 +96,38 @@
 
 
         </form>
-        <!--if in forms we have another form then create the second form after first form and call the id at the selected button-->
-    <!--delete form-->
-    <form method="POST" action="{{ route('artists.destroy', $artist) }}" id="delete-form" class="hidden">
-        @csrf
-        @method('DELETE')
-    </form>
 
+        <!--if in forms we have another form then create the second form after first form and call the id at the selected button-->
+        <!--delete form-->
+        <form method="POST" action="{{ route('artists.destroy', $artist) }}" id="delete-form" class="hidden">
+            @csrf
+            @method('DELETE')
+        </form>
+
+        {{-- API Submit Script --}}
+        <script>
+            document.getElementById('artist-edit-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(e.target);
+
+                try {
+                    formData.append('_method', 'PUT');
+
+                    await window.api.post(
+                        '/artists/{{ $artist->id }}',
+                        formData
+                    );
+
+                    alert('Artist updated successfully!');
+                    window.location.href = '/artists/{{ $artist->id }}';
+
+                } catch (error) {
+                    console.error(error);
+                    alert('Failed to update artist');
+                }
+            });
+        </script>
 
 
     </x-card-container>

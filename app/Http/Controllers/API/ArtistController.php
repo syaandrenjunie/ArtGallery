@@ -8,37 +8,43 @@ use App\Http\Controllers\Controller;
 
 class ArtistController extends Controller
 {
-    public function index(Request $request) {
-    // Start a query builder
-    $query = Artist::query();
+    public function index()
+    {
 
-    // Filter by name
-    if ($request->has('name') && $request->name != '') {
-        $query->where('name', 'like', '%' . $request->name . '%');
+        return Artist::all();
+    }
+
+    public function store(Request $request)
+    {
+        //Validate 
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'bio' => 'nullable|string',
+            'email' => 'required|email',
+            'contact' => 'required|string',
+            'picture' => 'nullable|image|max:2048',
+        ]);
+
+        //Handle file upload
+        if ($request->hasFile('picture')) {
+            $validated['picture'] = $request->file('picture')
+                ->store('artists', 'public');
+        }
+
+        //Create artist
+        $artist = Artist::create($validated);
+
+        //Return API response
+        return response()->json([
+            'message' => 'Artist created successfully',
+            'artist' => $artist
+        ], 201);
     }
 
 
 
-    // Sorting: default is updated_at desc
-    $sortField = $request->get('sort', 'updated_at');
-    $sortOrder = $request->get('order', 'desc');
-    $query->orderBy($sortField, $sortOrder);
-
-    // Paginate
-    $artists = $query->paginate(10);
-
-    // Return JSON
-    return response()->json([
-        'data' => $artists->items(),
-        'current_page' => $artists->currentPage(),
-        'last_page' => $artists->lastPage(),
-        'per_page' => $artists->perPage(),
-        'total' => $artists->total(),
-    ]);
-}
-
-
-    public function show($id) {
+    public function show($id)
+    {
         $artist = Artist::find($id);
 
         if (!$artist) {
@@ -47,4 +53,19 @@ class ArtistController extends Controller
 
         return response()->json($artist);
     }
+
+    public function update(Request $request, Artist $artist)
+    {
+        $artist->update($request->except('picture'));
+
+        if ($request->hasFile('picture')) {
+            // handle upload later
+        }
+
+        return response()->json([
+            'message' => 'Artist updated',
+            'artist' => $artist
+        ]);
+    }
+
 }

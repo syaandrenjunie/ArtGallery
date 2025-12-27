@@ -11,7 +11,9 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->get('/artists', [ArtistController::class, 'index']);
-
+Route::middleware('auth:sanctum')->post('/artists', [ArtistController::class, 'store']);
+Route::middleware('auth:sanctum')->get('/artists/{id}', [ArtistController::class, 'show']);
+Route::middleware('auth:sanctum')->put('/artists/{artist}', [ArtistController::class, 'update']);
 
 Route::middleware('auth:sanctum')->group(function () {
    
