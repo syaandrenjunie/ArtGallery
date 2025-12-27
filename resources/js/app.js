@@ -1,5 +1,7 @@
 import './bootstrap';
 
+import api from './api';    //imports ApiClient class
+window.api = api;   
 
 // Vue Setup
 import { createApp } from 'vue'
