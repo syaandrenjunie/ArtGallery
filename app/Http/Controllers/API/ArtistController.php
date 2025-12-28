@@ -10,8 +10,32 @@ class ArtistController extends Controller
 {
     public function index()
     {
+        // Returns all artists (for initial page load)
+        return response()->json([
+            'data' => Artist::all()
+        ]);
+    }
 
-        return Artist::all();
+    public function search(Request $request)
+    {
+        $query = Artist::query();
+
+        // Search across name, bio, and email
+        if ($request->has('name') && !empty($request->name)) {
+            $searchTerm = $request->name;
+
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'LIKE', '%' . $searchTerm . '%')
+                    ->orWhere('bio', 'LIKE', '%' . $searchTerm . '%')
+                    ->orWhere('email', 'LIKE', '%' . $searchTerm . '%');
+            });
+        }
+
+        $artists = $query->get();
+
+        return response()->json([
+            'data' => $artists
+        ]);
     }
 
     public function store(Request $request)
@@ -41,8 +65,6 @@ class ArtistController extends Controller
         ], 201);
     }
 
-
-
     public function show($id)
     {
         $artist = Artist::find($id);
@@ -67,5 +89,4 @@ class ArtistController extends Controller
             'artist' => $artist
         ]);
     }
-
 }
