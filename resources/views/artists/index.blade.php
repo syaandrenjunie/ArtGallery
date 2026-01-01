@@ -22,7 +22,8 @@
 
 
 <div id="search-artists">
-</div>
+                <artist-search></artist-search>
+            </div>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
                 <div id="blade-artist-list">

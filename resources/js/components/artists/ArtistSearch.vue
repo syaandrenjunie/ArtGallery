@@ -1,63 +1,45 @@
 <template>
   <div>
-    <!-- Search Bar -->
-    <div class="p-4 flex gap-3">
-      <input v-model="searchName" @input="searchArtists" type="text" placeholder="Search by name, email or bio..."
-        class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+    <!-- Reusable Search Bar (Child) -->
+    <SearchBar v-model="searchQuery" placeholder="Search by name, bio, or email..." @search="handleSearch"
+      @clear="handleClear" />
 
-      <button v-if="searchName" @click="clearSearch"
-        class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
-        Clear
-      </button>
-    </div>
-
-    <!-- Show Vue results when searching -->
+    <!-- Show results only when searching -->
     <div v-if="isSearching">
-      <p v-if="loading" class="text-gray-500 text-sm px-4">Searching...</p>
-
-      <!--Vue reactively updates the UI based on the search results-->
-      <ul v-if="artists.length > 0" class="divide-y divide-gray-100">
-        <li v-for="artist in artists" :key="artist.id" class="flex justify-between gap-x-6 py-5 pl-4">
-          <a :href="`/artists/${artist.id}`" class="flex min-w-0 gap-x-4 w-full hover:bg-gray-50 rounded-md transition">
-            <img v-if="artist.picture" :src="artist.picture" :alt="artist.name"
-              class="size-12 flex-none rounded-full bg-gray-100" />
-            <div class="min-w-0 flex-auto">
-              <p class="text-sm/6 font-semibold text-gray-900">{{ artist.name }}</p>
-              <p class="mt-1 truncate text-xs/5 text-gray-500">{{ artist.email }}</p>
-            </div>
-            <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end pr-4">
-              <p class="text-sm/6 text-gray-900">{{ artist.bio }}</p>
-              <p class="mt-1 text-xs/5 text-gray-500">{{ artist.contact }}</p>
-            </div>
-          </a>
-        </li>
-      </ul>
-
-      <p v-else-if="!loading" class="text-gray-500 text-center py-8">
-        No artists found for "{{ searchName }}"
-      </p>
+      <ArtistList :artists="artists" :loading="loading" :search-term="searchQuery" />
     </div>
   </div>
 </template>
 
 <script>
 import api from '../../api.js';
+import SearchBar from '../shared/SearchBar.vue';
+import ArtistList from './ArtistList.vue';
 
 export default {
+  name: 'ArtistSearch',
+  components: { SearchBar, ArtistList },
   data() {
     return {
-      searchName: '',
+      searchQuery: '',
       artists: [],
       loading: false,
       debounceTimer: null,
       isSearching: false
     }
   },
+  watch: {
+    // Watch searchQuery to see v-model updates in real-time
+    searchQuery(newVal) {
+      console.log('[ArtistSearch] searchQuery updated:', newVal);
+    }
+  },
   methods: {
-    async searchArtists() {
-      clearTimeout(this.debounceTimer);   //debounce timer avoids  excessive API calls
+    handleSearch(searchTerm) {
+      console.log('[ArtistSearch] handleSearch triggered with:', searchTerm);
+      clearTimeout(this.debounceTimer);
 
-      if (!this.searchName.trim()) {
+      if (!searchTerm.trim()) {
         this.artists = [];
         this.isSearching = false;
         this.showBladeList();
@@ -68,25 +50,32 @@ export default {
       this.hideBladeList();
 
       this.debounceTimer = setTimeout(async () => {
-        this.loading = true;            //lets template show "Searching..." message
-
-        try {
-          // Use the new search endpoint
-          const endpoint = `/artists/search?name=${encodeURIComponent(this.searchName)}`;
-          const response = await api.get(endpoint);
-
-          this.artists = response.data || response;
-        } catch (error) {
-          console.error('Search failed:', error);
-          this.artists = [];
-        } finally {
-          this.loading = false;
-        }
+        await this.searchArtists(searchTerm);
       }, 500);
     },
 
-    clearSearch() {
-      this.searchName = '';
+    async searchArtists(searchTerm) {
+      this.loading = true;
+      console.log('[ArtistSearch] Searching artists for:', searchTerm);
+
+      try {
+        const endpoint = `/artists/search?name=${encodeURIComponent(searchTerm)}`;
+        const response = await api.get(endpoint);
+
+        console.log('[ArtistSearch] API response:', response);
+
+        this.artists = response.data || response;
+      } catch (error) {
+        console.error('[ArtistSearch] Search failed:', error);
+        this.artists = [];
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    handleClear() {
+      console.log('[ArtistSearch] handleClear triggered');
+      this.searchQuery = '';
       this.artists = [];
       this.isSearching = false;
       this.showBladeList();
