@@ -1,32 +1,29 @@
 <div>
     @if (empty($searchText))
-        {{-- Show initial blade list --}}
+        {{-- Show all categories when not searching --}}
+        <h3 class="font-bold mb-2">All Categories ({{ count($categories) }})</h3>
         <x-stack-list>
             @foreach ($categories as $category)
-                <x-stack-item :title="$category->name" :description="$category->description" :link="route('categories.show', $category->id)" />
+                <x-stack-item 
+                    :title="$category->name" 
+                    :description="$category->description"
+                    :link="route('categories.show', $category->id)" />
             @endforeach
         </x-stack-list>
-    @endif
-
-    @if (!empty($searchText))
-        {{-- Show search results only when searching --}}
-        <div class="{{ $isDropdownPage ? 'absolute mt-1 w-64 bg-white border rounded shadow-lg z-50' : '' }}">
+    @else
+        {{-- Show search results when searching --}}
+        <h3 class="font-bold mb-2">Search Results ({{ count($results) }})</h3>
+        @if(count($results) > 0)
             <x-stack-list>
-            @foreach ($results as $result)
-                @if($isDropdownPage)
-                    <!-- Compact dropdown: show only title -->
-                    <div class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                        {{ $result->name }}
-                    </div>
-                @else
-                    <!-- Normal list: show full stack-item -->
+                @foreach ($results as $result)
                     <x-stack-item 
                         :title="$result->name" 
-                        :description="$result->description" 
+                        :description="$result->description"
                         :link="route('categories.show', $result->id)" />
-                @endif
-            @endforeach
-        </x-stack-list>
-        </div>
+                @endforeach
+            </x-stack-list>
+        @else
+            <p class="text-red-500">No results found for "{{ $searchText }}"</p>
+        @endif
     @endif
 </div>

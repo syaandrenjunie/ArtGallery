@@ -9,19 +9,12 @@ class SearchResults extends Component
 {
     #[Reactive]
     public $results = [];
-    
+
     #[Reactive]
     public $searchText = '';
-    
+
+    #[Reactive]
     public $categories = [];
-
-    public $isDropdownPage = false;
-
-public function mount()
-{
-    $this->isDropdownPage = !request()->routeIs('categories.index');
-}
-
 
     public function render()
     {

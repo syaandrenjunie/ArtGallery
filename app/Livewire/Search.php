@@ -22,7 +22,7 @@ class Search extends Component
         if (empty(trim($value))) {
             return;
         }
-
+        
         $searchTerm = "%{$value}%";
         $this->results = Category::where('name', 'LIKE', $searchTerm)->get();
     }
