@@ -13,13 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
 
+        //sanctum middleware for SPA autentication
         $middleware->statefulApi();
         
-        // Sanctum Middleware for SPA Authentication
-        $middleware->api([
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-        ]);
-
+        
         //register alias
         $middleware->alias([
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
