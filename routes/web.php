@@ -1,10 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\ArtworkController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PurchaseController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,6 +37,7 @@ Route::prefix('artists')->name('artists.')->controller(ArtistController::class)-
     Route::middleware('auth')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/{artist}', 'show')->name('show');
+        
     });
 
 
@@ -52,8 +55,6 @@ Route::prefix('categories')->name('categories.')->middleware(['auth', 'role:admi
 
 });
 
-
-
 Route::prefix('artworks')->name('artworks.')->controller(ArtworkController::class)->group(function () {
 
     // Only Admin can create / edit / delete
@@ -69,17 +70,29 @@ Route::prefix('artworks')->name('artworks.')->controller(ArtworkController::clas
     Route::middleware('auth')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/{artwork}', 'show')->name('show');
+                Route::get('/{artwork}/chat', 'chat')->name('chat');
+
     });
 
 
 });
 
+Route::prefix('purchases')->name('purchases.')->controller(PurchaseController::class)->group(function () {
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/{artwork}/create', 'create')->name('create');
+        Route::post('/{artwork}','store')->name('store');
+    });
+
+});
+    
+    
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/favorites', [ArtworkController::class, 'favorites'])->name('favorites.index');
 });
 
-Route::get('/carts', function () {
-    return view('carts.index');
-});
+
 
 require __DIR__ . '/auth.php';

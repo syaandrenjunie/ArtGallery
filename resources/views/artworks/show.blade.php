@@ -32,12 +32,31 @@
           <p class="text-3xl tracking-tight text-gray-900">RM {{ $artwork->price }}</p>
 
           @role('user')
-          <p class = "mt-6">
-            <x-edit-button>Add To Cart</x-edit-button>
-          </p>
+          @if($artwork->status == 'available')
+            <p class="mt-6">
+              @csrf
+              <a href="{{ route('artworks.chat', $artwork->id) }}">
 
-          <x-danger-button>Buy Now</x-danger-button>
+                <x-edit-button type="submit">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-5 h-5 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 
+                   1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133
+                   a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379
+                   c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228
+                   A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513
+                   C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+                  </svg>
+                  Chat Artists
+                </x-edit-button>
+            </p>
+          @endif
+
+          @if($artwork->status == 'sold')
+            <span class="text-red-500 text-xl font-semibold">Sold</span>
+          @endif
           @endrole
+
 
           @role('admin')
           <p class="mt-6">
@@ -71,7 +90,6 @@
             <div class="space-y-6">
 
               <p class="text-xl tracking-tight text-gray-900 sm:text-lg">Made by: {{ $artwork->artist->name }}</p>
-
 
               <p class="text-xl tracking-tight text-gray-900 sm:text-lg">Category: {{$artwork->category->name}}</p>
 

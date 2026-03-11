@@ -16,7 +16,7 @@ class Artwork extends Model
 
     protected $table = 'artworks';
 
-    protected $fillable = ['title', 'price', 'picture', 'artist_id', 'category_id'];
+    protected $fillable = ['title', 'price', 'picture', 'artist_id', 'category_id', 'status'];
 
     public function artist()
     {
