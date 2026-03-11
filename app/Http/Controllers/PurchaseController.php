@@ -9,6 +9,17 @@ use Illuminate\Support\Facades\Auth;
 
 class PurchaseController extends Controller
 {
+
+    public function index() {
+
+        $purchases = Purchase::with('artwork')
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->paginate(10);
+
+        return view('purchases.index', compact('purchases'));
+    }
+    
     /**
      * Show purchase form
      */
