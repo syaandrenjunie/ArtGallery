@@ -30,12 +30,20 @@
                     </x-nav-link>
                 </div>
 
-                @role('admin')
-                                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                @role('user')
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('purchases.index')" :active="request()->routeIs('purchases.*')">
+                        {{ __('Order History') }}
+                    </x-nav-link>
+                </div>
+                @endrole
 
-                <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
-                    {{ __('Category') }}
-                </x-nav-link>
+                @role('admin')
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+
+                    <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                        {{ __('Category') }}
+                    </x-nav-link>
                 </div>
                 @endrole
 

@@ -80,6 +80,7 @@ Route::prefix('artworks')->name('artworks.')->controller(ArtworkController::clas
 Route::prefix('purchases')->name('purchases.')->controller(PurchaseController::class)->group(function () {
 
     Route::middleware(['auth'])->group(function () {
+        Route::get('/history', 'index')->name('index');
         Route::get('/{artwork}/create', 'create')->name('create');
         Route::post('/{artwork}','store')->name('store');
     });

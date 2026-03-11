@@ -10,20 +10,26 @@ use Illuminate\Support\Facades\Storage;
 
 class ArtworkController extends Controller
 {
-    public function index()
-    {
+    public function index(Request $request)
+{
+    $artists = Artist::all();
+    $categories = Category::all();
 
-        $artists = Artist::all();
-        $categories = Category::all();
+    $query = Artwork::query();
 
-        $artworks = Artwork::latest('updated_at')->paginate(12);
-
-        return view(
-            'artworks.index',
-            compact('artists', 'artworks', 'categories')
-        );
-
+    // Filter by status if provided
+    if ($request->has('status') && in_array($request->status, ['available', 'sold'])) {
+        $query->where('status', $request->status);
     }
+
+    // Order so that available artworks come first, sold last
+    $query->orderByRaw("CASE WHEN status = 'available' THEN 0 ELSE 1 END")
+          ->latest('updated_at');
+
+    $artworks = $query->paginate(12);
+
+    return view('artworks.index', compact('artists', 'artworks', 'categories'));
+}
 
     public function create()
     {
@@ -72,7 +78,8 @@ class ArtworkController extends Controller
     public function show(Artwork $artwork)
     {
         return view('artworks.show', data: [
-            'artwork' => $artwork]);
+            'artwork' => $artwork
+        ]);
     }
 
     public function edit(Artwork $artwork)
@@ -129,18 +136,26 @@ class ArtworkController extends Controller
     public function destroy(Artwork $artwork)
     {
         $artwork->delete();
-        
+
         //redirect
         return redirect('/artworks');
     }
 
 
     public function favorites()
-{
-    $favorites = auth()->user()->favorites()
-                      ->with('artist')
-                      ->paginate(12);
-    
-    return view('artworks.favorites', compact('favorites'));
-}
+    {
+        $favorites = auth()->user()->favorites()
+            ->with('artist')
+            ->paginate(12);
+
+        return view('artworks.favorites', compact('favorites'));
+    }
+
+    public function chat(Artwork $artwork)
+    {
+        return view('artworks.chat', data: [
+            'artwork' => $artwork,
+            'artist' => $artwork->artist
+        ]);
+    }
 }

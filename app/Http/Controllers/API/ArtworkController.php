@@ -13,6 +13,7 @@ class ArtworkController extends Controller
     {
         // Start a query builder with artist relationship
         $query = Artwork::with('artist');
+        $query->where('status', 'available');
 
         // Search by title (artworks have 'title', not 'name')
         if ($request->has('title') && $request->title != '') {
@@ -25,6 +26,8 @@ class ArtworkController extends Controller
                 $q->where('name', 'like', '%' . $request->artist . '%');
             });
         }
+
+      
 
         // General search (searches both title and artist name)
         if ($request->has('search') && $request->search != '') {
