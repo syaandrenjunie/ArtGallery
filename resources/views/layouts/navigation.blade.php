@@ -45,6 +45,12 @@
                         {{ __('Category') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('purchases.list')" :active="request()->routeIs('purchases.*')">
+                        {{ __('Purchase History') }}
+                    </x-nav-link>
+                </div>
                 @endrole
 
 
