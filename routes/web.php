@@ -83,6 +83,7 @@ Route::prefix('purchases')->name('purchases.')->controller(PurchaseController::c
         Route::get('/history', 'index')->name('index');
         Route::get('/{artwork}/create', 'create')->name('create');
         Route::post('/{artwork}','store')->name('store');
+        Route::get('/list', 'list')->name('list');
     });
 
 });

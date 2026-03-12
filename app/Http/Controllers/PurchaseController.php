@@ -71,5 +71,16 @@ class PurchaseController extends Controller
             ->with('success', 'Purchase submitted successfully.');
     }
 
+    // Only for admin view
+    public function list()
+{
+    $purchases = Purchase::with(['artwork', 'artist', 'user'])
+        ->latest()
+        ->paginate(10);
+
+    return view('purchases.list', compact('purchases'));
+}
+
+
     
 }
