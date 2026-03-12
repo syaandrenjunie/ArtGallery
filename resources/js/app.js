@@ -3,6 +3,11 @@ import './bootstrap';
 import api from './api';    //imports ApiClient class
 window.api = api;   
 
+// Start Alpine
+import Alpine from 'alpinejs';
+window.Alpine = Alpine;
+Alpine.start();
+
 // Vue Setup
 import { createApp } from 'vue'
 
