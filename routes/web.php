@@ -84,10 +84,11 @@ Route::prefix('purchases')->name('purchases.')->controller(PurchaseController::c
         Route::get('/{artwork}/create', 'create')->name('create');
         Route::post('/{artwork}','store')->name('store');
         Route::get('/list', 'list')->name('list');
+        Route::get('/{purchase}/edit', 'edit')->name('edit');
+        Route::patch('/{purchase}', 'update')->name('update');
     });
 
 });
-    
     
 
 

@@ -73,14 +73,39 @@ class PurchaseController extends Controller
 
     // Only for admin view
     public function list()
-{
-    $purchases = Purchase::with(['artwork', 'artist', 'user'])
-        ->latest()
-        ->paginate(10);
+    {
+        $purchases = Purchase::with(['artwork', 'artist', 'user'])
+            ->latest()
+            ->paginate(10);
 
-    return view('purchases.list', compact('purchases'));
-}
+        return view('purchases.list', compact('purchases'));
+    }
 
 
-    
+    // Show form to edit purchase status
+    public function edit(Purchase $purchase)
+
+        {
+
+        $statuses = ['to_ship', 'to_deliver', 'delivered', 'completed', 'cancelled'];
+
+        return view('purchases.edit', compact('purchase', 'statuses'));
+    }
+
+    // Update purchase status
+    public function update(Request $request, Purchase $purchase)
+    {
+        $request->validate([
+            'status' => ['required', 'in:to_ship,to_deliver,delivered,completed,cancelled'],
+        ]);
+
+        $purchase->update([
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('purchases.list')
+            ->with('success', 'Purchase status updated successfully.');
+    }
+
+
 }

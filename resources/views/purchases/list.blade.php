@@ -69,9 +69,12 @@
                                                     <div class="sm:flex sm:items-start">
                                                         <div
                                                             class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:size-10">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                                                                </svg>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                                class="size-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                                                            </svg>
                                                         </div>
                                                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                                             <h3 id="dialog-title"
@@ -85,57 +88,60 @@
                                                                         class="size-32 flex-none bg-gray-100" />
                                                                 </div>
 
-                                                                <h2 class="text-md font-semibold mb-3">{{$purchase->artwork->title}} by {{ $purchase->artist->name }}</h2>
+                                                                <h2 class="text-md font-semibold mb-3">
+                                                                    {{$purchase->artwork->title}} by
+                                                                    {{ $purchase->artist->name }}</h2>
 
-                                                                <span class="text-sm font-semibold text-blue-500 ">User Details</span>
+                                                                <span class="text-sm font-semibold text-blue-500 ">User
+                                                                    Details</span>
 
                                                                 <p>Name: {{$purchase->user->name}} </p>
                                                                 <p>E-mail: {{ $purchase->user->email}}</p>
                                                                 <p>Phone Number: {{ $purchase->user->contact}}</p>
-                                                                
-                                                                <span class="text-sm font-semibold text-blue-500 mt-3 inline-block">Payment Details</span>
+
+                                                                <span
+                                                                    class="text-sm font-semibold text-blue-500 mt-3 inline-block">Payment
+                                                                    Details</span>
                                                                 <p>Payment Type:{{ $purchase->payment_type}}</p>
                                                                 <p>Account Number: {{ $purchase->account_number}}</p>
                                                                 <p>Purchase Submitted at {{$purchase->created_at}}</p>
 
                                                                 @if($purchase->status === 'to_ship')
-                                                                    <span class="text-yellow-600 font-semibold mt-3 inline-block">To be shipped</span>
+                                                                    <span
+                                                                        class="text-yellow-600 font-semibold mt-3 inline-block">To
+                                                                        be shipped</span>
                                                                 @elseif($purchase->status === 'to_deliver')
-                                                                    <span class="text-magenta-600 font-semibold mt-3 inline-block">To be delivered</span>
+                                                                    <span
+                                                                        class="text-magenta-600 font-semibold mt-3 inline-block">To
+                                                                        be delivered</span>
                                                                 @elseif($purchase->status === 'completed')
-                                                                    <span class="text-green-600 font-semibold mt-3 inline-block">Completed</span>
+                                                                    <span
+                                                                        class="text-green-600 font-semibold mt-3 inline-block">Completed</span>
                                                                 @elseif($purchase->status === 'cancelled')
-                                                                    <span class="text-red-600 font-semibold mt-3 inline-block">Cancelled</span>
+                                                                    <span
+                                                                        class="text-red-600 font-semibold mt-3 inline-block">Cancelled</span>
                                                                 @endif
 
-                                                               
+
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                                    <button type="button" command="close" commandfor="dialog"
-                                                        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto">Deactivate</button>
-                                                    <button type="button" command="close" commandfor="dialog"
-                                                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
+                                                    <a href="{{ route('purchases.edit', $purchase) }}">
+                                                        <x-secondary-button>
+                                                            Edit
+                                                        </x-secondary-button>
+                                                    </a>
+
+                                                    <x-cancel-button command="close" commandfor="dialog"
+                                                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</x-cancel-button>
                                                 </div>
                                             </el-dialog-panel>
                                         </div>
                                     </dialog>
                                 </el-dialog>
 
-
-                                <a href="">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        class="size-6 text-blue-500">
-                                        <path
-                                            d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
-                                        <path
-                                            d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
-                                    </svg>
-
-
-                                </a>
 
                                 <form method="POST" action="">
                                     @csrf
