@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Auth;
 class PurchaseController extends Controller
 {
 
-    public function index() {
+
+    public function index()
+    {
 
         $purchases = Purchase::with('artwork')
             ->where('user_id', Auth::id())
@@ -19,7 +21,7 @@ class PurchaseController extends Controller
 
         return view('purchases.index', compact('purchases'));
     }
-    
+
     /**
      * Show purchase form
      */
@@ -56,7 +58,7 @@ class PurchaseController extends Controller
             'payment_method' => $request->payment_method,
             'account_number' => $request->account_number,
             'payment_proof' => $paymentProofPath,
-            'status' => 'pending'
+            'status' => 'to_ship'
         ]);
 
         // mark artwork as sold
@@ -68,4 +70,6 @@ class PurchaseController extends Controller
             ->route('artworks.show', $artwork->id)
             ->with('success', 'Purchase submitted successfully.');
     }
+
+    
 }

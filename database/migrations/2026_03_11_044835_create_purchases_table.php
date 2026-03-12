@@ -21,7 +21,8 @@ return new class extends Migration {
             $table->string('payment_method');
             $table->string('account_number');
             $table->string('payment_proof')->nullable();
-            $table->string('status')->default('pending');
+            $table->enum('status', ['to_ship', 'to_deliver', 'delivered', 'completed', 'cancelled'])
+                ->default('to_ship');
             $table->timestamps();
             $table->softDeletes();
         });

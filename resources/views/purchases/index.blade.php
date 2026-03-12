@@ -37,11 +37,11 @@
                             {{-- Purchase Status --}}
                             <p class="mt-1 text-sm">
 
-                                @if($purchase->status == 'pending')
+                                @if($purchase->status == 'to_ship')
                                     <span class="text-yellow-600 font-semibold">
-                                        Pending
+                                        To be shipped
                                     </span>
-                                @elseif($purchase->status == 'complete')
+                                @elseif($purchase->status == 'completed')
                                     <span class="text-green-600 font-semibold">
                                         Completed
                                     </span>
