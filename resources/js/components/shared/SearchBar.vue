@@ -1,5 +1,5 @@
 <template>
-    <div class="p-4 flex gap-3">
+    <div class="p-4 flex gap-3 items-center">
         <input :value="modelValue" @input="handleInput" type="text" :placeholder="placeholder"
             class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
 

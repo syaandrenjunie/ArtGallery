@@ -85,6 +85,7 @@
                             @enderror
                         </div>
 
+
                         {{-- Category --}}
                         <div class="sm:col-span-4" x-data="{ selectedCategoryName: 'Select a category' }">
                             <x-input-label class="block text-sm font-medium text-gray-900 mb-1">Category</x-input-label>
@@ -122,6 +123,7 @@
                             @enderror
                         </div>
 
+
                         {{-- Title --}}
                         <div class="col-span-full">
                             <x-input-label for="title" class="block text-sm font-medium text-gray-900">
@@ -136,16 +138,35 @@
                             @enderror
                         </div>
 
+
                         {{-- Price --}}
                         <div class="col-span-full">
                             <x-input-label for="price" class="block text-sm font-medium text-gray-900">
                                 Price
                             </x-input-label>
 
-                            <x-text-input id="price" name="price" type="text" placeholder="1299.99"
+                            <x-text-input id="price" name="price" type="text" placeholder="In Ringgit Malaysia (RM)"
                                 class="mt-1 block w-full" required />
 
                             @error('price')
+                                <p class="text-xs text-red-500 font-semibold">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        
+                        {{-- Status --}}
+                        <div class="sm:col-span-4">
+                            <x-input-label>Status</x-input-label>
+
+                            <div class="flex gap-4 mt-2">
+                                <x-status-radio name="status" value="available" label="Available"
+                                    :checked="old('status', 'available') == 'available'" />
+
+                                <x-status-radio name="status" value="sold" label="Sold"
+                                    :checked="old('status') == 'sold'" />
+                            </div>
+
+                            @error('status')
                                 <p class="text-xs text-red-500 font-semibold">{{ $message }}</p>
                             @enderror
                         </div>
@@ -156,7 +177,7 @@
 
 
                 <div class="mt-6 flex items-center justify-end gap-x-6">
-                    <button type="button" class="text-sm/6 font-semibold text-gray-900">Cancel</button>
+                    <button type="button" action="{{ route('artworks.index') }}" class="text-sm/6 font-semibold text-gray-900">Cancel</button>
                     <x-primary-button type="submit">Save</x-primary-button>
                 </div>
         </form>

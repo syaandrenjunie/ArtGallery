@@ -20,20 +20,75 @@
 
   <x-slot:resource>artworks</x-slot:resource>
 
+  
+
   <div class="mx-auto max-w-7xl px-4 pt-2 pb-6 sm:px-6 lg:px-8">
 
-    <div class="flex gap-2 items-center mt-4">
+    <div class="mt-4 flex items-center gap-4">
 
-      <!-- Vue Component (Search Bar + Filtered Results) -->
-      <div id="search-artworks" class="mt-4 flex-1"></div>
+      <!-- Vue Search -->
+      <div id="search-artworks" class="flex-1"></div>
 
-      <form method="GET" action="{{ route('artworks.index') }}" class="flex gap-2 items-center">
-        <select name="status" class="mt-3 px-3 py-1 bg-blue-500 text-white rounded">
-          <option value="">All Status</option>
-          <option value="available" {{ request('status') == 'available' ? 'selected' : '' }}>Available</option>
-          <option value="sold" {{ request('status') == 'sold' ? 'selected' : '' }}>Sold</option>
-        </select>
-        <x-primary-button type="submit" class="mt-3">Filter</x-primary-button>
+      <!-- Filter Form -->
+      <form method="GET" action="{{ route('artworks.index') }}" class="flex items-center gap-3">
+
+        <div x-data="{ 
+          selectedStatus: '{{ request('status') ?? '' }}',
+          selectedStatusName: '{{ request('status') ? ucfirst(request('status')) : 'All Status' }}'
+        }">
+
+          <x-dropdown align="left" width="48">
+            <x-slot name="trigger">
+              <button type="button"
+                class="inline-flex justify-between w-40 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm hover:bg-gray-50">
+
+                <span x-text="selectedStatusName"></span>
+
+                <svg class="size-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"
+                    clip-rule="evenodd" />
+                </svg>
+
+              </button>
+            </x-slot>
+
+            <x-slot name="content">
+
+              <x-dropdown-link href="#" @click.prevent="
+                        selectedStatus = '';
+                        selectedStatusName = 'All Status';
+                        $refs.statusInput.value = '';
+                    ">
+                All Status
+              </x-dropdown-link>
+
+              <x-dropdown-link href="#" @click.prevent="
+                        selectedStatus = 'available';
+                        selectedStatusName = 'Available';
+                        $refs.statusInput.value = 'available';
+                    ">
+                Available
+              </x-dropdown-link>
+
+              <x-dropdown-link href="#" @click.prevent="
+                        selectedStatus = 'sold';
+                        selectedStatusName = 'Sold';
+                        $refs.statusInput.value = 'sold';
+                    ">
+                Sold
+              </x-dropdown-link>
+
+            </x-slot>
+          </x-dropdown>
+
+          <!-- hidden input -->
+          <input type="hidden" name="status" x-ref="statusInput" :value="selectedStatus">
+
+        </div>
+
+        <x-primary-button type="submit">Filter</x-primary-button>
+
       </form>
     </div>
 

@@ -81,9 +81,9 @@
                                 <x-slot name="content">
                                     @foreach ($artists as $artist)
                                         <x-dropdown-link href="#" @click.prevent="
-                                                        $refs.artistInput.value = '{{ $artist->id }}';
-                                                        selectedArtistName = '{{ $artist->name }}';
-                                                    ">
+                                                            $refs.artistInput.value = '{{ $artist->id }}';
+                                                            selectedArtistName = '{{ $artist->name }}';
+                                                        ">
                                             {{ $artist->name }}
                                         </x-dropdown-link>
                                     @endforeach
@@ -123,9 +123,9 @@
                                 <x-slot name="content">
                                     @foreach ($categories as $category)
                                         <x-dropdown-link href="#" @click.prevent="
-                                                        $refs.categoryInput.value = '{{ $category->id }}';
-                                                        selectedCategoryName = '{{ $category->name }}';
-                                                    ">
+                                                            $refs.categoryInput.value = '{{ $category->id }}';
+                                                            selectedCategoryName = '{{ $category->name }}';
+                                                        ">
                                             {{ $category->name }}
                                         </x-dropdown-link>
                                     @endforeach
@@ -171,6 +171,23 @@
                                 <p class="text-xs text-red-500 font-semibold">{{ $message }}</p>
                             @enderror
 
+                        </div>
+
+                        {{-- Status --}}
+                        <div class="sm:col-span-4">
+                            <x-input-label>Status</x-input-label>
+
+                            <div class="flex gap-4 mt-2">
+                                <x-status-radio name="status" value="available" label="Available"
+                                    :checked="old('status', 'available') == 'available'" />
+
+                                <x-status-radio name="status" value="sold" label="Sold"
+                                    :checked="old('status') == 'sold'" />
+                            </div>
+
+                            @error('status')
+                                <p class="text-xs text-red-500 font-semibold">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 

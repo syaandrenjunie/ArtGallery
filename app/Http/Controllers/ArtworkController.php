@@ -11,25 +11,25 @@ use Illuminate\Support\Facades\Storage;
 class ArtworkController extends Controller
 {
     public function index(Request $request)
-{
-    $artists = Artist::all();
-    $categories = Category::all();
+    {
+        $artists = Artist::all();
+        $categories = Category::all();
 
-    $query = Artwork::query();
+        $query = Artwork::query();
 
-    // Filter by status if provided
-    if ($request->has('status') && in_array($request->status, ['available', 'sold'])) {
-        $query->where('status', $request->status);
+        // Filter by status if provided
+        if ($request->has('status') && in_array($request->status, ['available', 'sold'])) {
+            $query->where('status', $request->status);
+        }
+
+        // Order so that available artworks come first, sold last
+        $query->orderByRaw("CASE WHEN status = 'available' THEN 0 ELSE 1 END")
+            ->latest('updated_at');
+
+        $artworks = $query->paginate(12);
+
+        return view('artworks.index', compact('artists', 'artworks', 'categories'));
     }
-
-    // Order so that available artworks come first, sold last
-    $query->orderByRaw("CASE WHEN status = 'available' THEN 0 ELSE 1 END")
-          ->latest('updated_at');
-
-    $artworks = $query->paginate(12);
-
-    return view('artworks.index', compact('artists', 'artworks', 'categories'));
-}
 
     public function create()
     {
@@ -53,6 +53,7 @@ class ArtworkController extends Controller
             'picture' => 'nullable|file|mimes:jpg,jpeg,png,gif,pdf|max:10240',
             'artist_id' => 'required|exists:artists,id',
             'category_id' => 'required|exists:categories,id',
+            'status' => 'required|in:available,sold',
         ]);
 
         //create
@@ -68,6 +69,7 @@ class ArtworkController extends Controller
             'picture' => $path ? asset('storage/' . $path) : null,
             'artist_id' => request('artist_id'),
             'category_id' => request('category_id'),
+            'status' => request('status'),
         ]);
 
         //redirect
@@ -101,6 +103,7 @@ class ArtworkController extends Controller
             'picture' => 'nullable|file|mimes:jpg,jpeg,png,gif,pdf|max:10240',
             'artist_id' => 'required|exists:artists,id',
             'category_id' => 'required|exists:categories,id',
+            'status' => 'required|in:available,sold',
         ]);
 
         // Handle picture update
@@ -123,6 +126,7 @@ class ArtworkController extends Controller
         $artwork->price = request('price');
         $artwork->artist_id = request('artist_id');
         $artwork->category_id = request('category_id');
+        $artwork->status = request('status');
 
         //persist
         $artwork->save();
