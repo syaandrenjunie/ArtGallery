@@ -67,7 +67,7 @@ class PurchaseController extends Controller
         ]);
 
         return redirect()
-            ->route('artworks.show', $artwork->id)
+            ->route('purchases.index', ['artwork' => $artwork->id])
             ->with('success', 'Purchase submitted successfully.');
     }
 

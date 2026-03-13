@@ -99,7 +99,7 @@
 
             {{-- Buttons --}}
             <div class="flex justify-end gap-4 pt-4">
-                <x-danger-button href="{{ route('artists.index') }}"
+                <x-danger-button href="{{ route('artworks.index') }}"
                     class="text-sm text-gray-600 hover:text-gray-900">Cancel</x-danger-button>
                 <x-secondary-button type="submit">Submit Purchase</x-secondary-button>
             </div>

@@ -10,9 +10,7 @@
     </x-slot>
 
     <div class="mx-auto max-w-7xl px-4 pt-2 pb-6 sm:px-6 lg:px-8">
-
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-5">
-
             <x-data-table>
 
                 <!-- Table Header -->
@@ -40,23 +38,20 @@
                                 @if($purchase->status === 'to_ship')
                                     <span class="text-yellow-600 font-semibold">To be shipped</span>
                                 @elseif($purchase->status === 'to_deliver')
-                                    <span class="text-magenta-600 font-semibold">To be delivered</span>
+                                    <span class="text-fuchsia-600 font-semibold">To be delivered</span>
                                 @elseif($purchase->status === 'completed')
-                                    <span class="text-green-600 font-semibold">Completed</span>
+                                    <span class="text-lime-600 font-semibold">Completed</span>
                                 @elseif($purchase->status === 'cancelled')
-                                    <span class="text-red-600 font-semibold">Cancelled</span>
+                                    <span class="text-orange-600 font-semibold">Cancelled</span>
                                 @endif
                             </td>
 
                             <!-- Action Buttons -->
                             <td class="px-6 py-4 text-sm flex gap-2 items-center">
 
-
-                                <button command="show-modal" commandfor="dialog"
-                                    class="rounded-md bg-gray-950/5 px-2.5 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-950/10">Open
-                                    dialog</button>
+                                <x-view-button command="show-modal" :commandfor="'dialog--' . $purchase->id">View</x-view-button>
                                 <el-dialog>
-                                    <dialog id="dialog" aria-labelledby="dialog-title"
+                                    <dialog id="dialog--{{ $purchase->id }}" aria-labelledby="dialog-title"
                                         class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
                                         <el-dialog-backdrop
                                             class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
@@ -90,7 +85,8 @@
 
                                                                 <h2 class="text-md font-semibold mb-3">
                                                                     {{$purchase->artwork->title}} by
-                                                                    {{ $purchase->artist->name }}</h2>
+                                                                    {{ $purchase->artist->name }}
+                                                                </h2>
 
                                                                 <span class="text-sm font-semibold text-blue-500 ">User
                                                                     Details</span>
@@ -102,7 +98,8 @@
                                                                 <span
                                                                     class="text-sm font-semibold text-blue-500 mt-3 inline-block">Payment
                                                                     Details</span>
-                                                                <p>Payment Type:{{ $purchase->payment_type}}</p>
+
+                                                                <p>Payment Type:{{ $purchase->payment_method}}</p>
                                                                 <p>Account Number: {{ $purchase->account_number}}</p>
                                                                 <p>Purchase Submitted at {{$purchase->created_at}}</p>
 
@@ -112,14 +109,14 @@
                                                                         be shipped</span>
                                                                 @elseif($purchase->status === 'to_deliver')
                                                                     <span
-                                                                        class="text-magenta-600 font-semibold mt-3 inline-block">To
+                                                                        class="text-fuchsia-600 font-semibold mt-3 inline-block">To
                                                                         be delivered</span>
                                                                 @elseif($purchase->status === 'completed')
                                                                     <span
-                                                                        class="text-green-600 font-semibold mt-3 inline-block">Completed</span>
+                                                                        class="text-lime-600 font-semibold mt-3 inline-block">Completed</span>
                                                                 @elseif($purchase->status === 'cancelled')
                                                                     <span
-                                                                        class="text-red-600 font-semibold mt-3 inline-block">Cancelled</span>
+                                                                        class="text-orange-600 font-semibold mt-3 inline-block">Cancelled</span>
                                                                 @endif
 
 
@@ -129,9 +126,9 @@
                                                 </div>
                                                 <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                                     <a href="{{ route('purchases.edit', $purchase) }}">
-                                                        <x-secondary-button>
+                                                        <x-edit-button>
                                                             Edit
-                                                        </x-secondary-button>
+                                                        </x-edit-button>
                                                     </a>
 
                                                     <x-cancel-button command="close" commandfor="dialog"
@@ -142,21 +139,7 @@
                                     </dialog>
                                 </el-dialog>
 
-
-                                <form method="POST" action="">
-                                    @csrf
-                                    @method('DELETE')
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        class="size-6 text-red-500">
-                                        <path fill-rule="evenodd"
-                                            d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-
-                                </form>
-
                             </td>
-
                         </tr>
                     @endforeach
 

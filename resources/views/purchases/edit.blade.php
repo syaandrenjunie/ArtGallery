@@ -128,11 +128,14 @@
                 @enderror
             </div>
 
+            
+           
             {{-- Buttons --}}
-            <div class="flex justify-end gap-4 pt-4">
-                <x-danger-button href="{{ route('purchases.list') }}"
-                    class="text-sm text-gray-600 hover:text-gray-900">Cancel</x-danger-button>
-                <x-secondary-button type="submit">Submit Purchase</x-secondary-button>
+            <div class="flex items-center justify-end gap-x-4 mt-0"">
+                <a href="{{ route('purchases.list', $purchase) }}" class="text-sm text-gray-800 hover:text-gray-900 font-semibold">
+                        Cancel
+                    </a>
+                <x-save-button type="submit">Submit Purchase</x-save-button>
             </div>
         </form>
     </x-card-container>
