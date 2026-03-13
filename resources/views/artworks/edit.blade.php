@@ -14,10 +14,10 @@
             @method('PATCH')
 
             <div class="space-y-12">
-                <div class="border-b border-gray-900/10 pb-12">
+                <div class="pb-2">
 
 
-                    <div class="mt-3 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                    <div class="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 
                         {{-- Picture --}}
                         <div class="col-span-full">
@@ -81,9 +81,9 @@
                                 <x-slot name="content">
                                     @foreach ($artists as $artist)
                                         <x-dropdown-link href="#" @click.prevent="
-                                                            $refs.artistInput.value = '{{ $artist->id }}';
-                                                            selectedArtistName = '{{ $artist->name }}';
-                                                        ">
+                                                                $refs.artistInput.value = '{{ $artist->id }}';
+                                                                selectedArtistName = '{{ $artist->name }}';
+                                                            ">
                                             {{ $artist->name }}
                                         </x-dropdown-link>
                                     @endforeach
@@ -123,9 +123,9 @@
                                 <x-slot name="content">
                                     @foreach ($categories as $category)
                                         <x-dropdown-link href="#" @click.prevent="
-                                                            $refs.categoryInput.value = '{{ $category->id }}';
-                                                            selectedCategoryName = '{{ $category->name }}';
-                                                        ">
+                                                                $refs.categoryInput.value = '{{ $category->id }}';
+                                                                selectedCategoryName = '{{ $category->name }}';
+                                                            ">
                                             {{ $category->name }}
                                         </x-dropdown-link>
                                     @endforeach
@@ -179,10 +179,10 @@
 
                             <div class="flex gap-4 mt-2">
                                 <x-status-radio name="status" value="available" label="Available"
-                                    :checked="old('status', 'available') == 'available'" />
+                                    :checked="old('status', '$artwork->status') == 'available'" />
 
                                 <x-status-radio name="status" value="sold" label="Sold"
-                                    :checked="old('status') == 'sold'" />
+                                    :checked="old('status', '$artwork->status') == 'sold'" />
                             </div>
 
                             @error('status')
@@ -193,14 +193,16 @@
 
 
                 </div>
-
-            </div>
-            </div>
-
-            <div class="mt-6 flex items-center justify-end gap-x-6">
+                
+            <div class="flex items-center justify-end gap-x-4 mt-0">
                 <button type="button" class="text-sm/6 font-semibold text-gray-900">Cancel</button>
                 <x-primary-button type="submit">Save</x-primary-button>
             </div>
+
+
+            </div>
+            </div>
+
 
         </form>
 

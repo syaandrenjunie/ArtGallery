@@ -34,7 +34,7 @@
 
         <div x-data="{ 
           selectedStatus: '{{ request('status') ?? '' }}',
-          selectedStatusName: '{{ request('status') ? ucfirst(request('status')) : 'All Status' }}'
+          selectedStatusName: '{{ request('status') ? ucfirst(request('status')) : 'Available' }}'
         }">
 
           <x-dropdown align="left" width="48">
@@ -87,7 +87,7 @@
 
         </div>
 
-        <x-primary-button type="submit">Filter</x-primary-button>
+        <x-secondary-button type="submit">Filter</x-secondary-button>
 
       </form>
     </div>

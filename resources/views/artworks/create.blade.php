@@ -9,14 +9,13 @@
     <x-slot:resource>artworks</x-slot:resource>
     <x-card-container>
 
-
         <form action="{{ route('artworks.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="space-y-12">
-                <div class="border-b border-gray-900/10 pb-12">
+                <div class="pb-2">
 
                     <div class="mt-3 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                        
+
                         {{-- Picture --}}
                         <div class="col-span-full">
                             <x-input-label for="cover-photo" class="block text-sm font-medium text-gray-900">Cover
@@ -68,9 +67,9 @@
                                 <x-slot name="content">
                                     @foreach ($artists as $artist)
                                         <x-dropdown-link href="#" @click.prevent="
-                                                        $refs.artistInput.value = {{ $artist->id }};
-                                                        selectedArtistName = '{{ $artist->name }}';
-                                                     ">
+                                                            $refs.artistInput.value = {{ $artist->id }};
+                                                            selectedArtistName = '{{ $artist->name }}';
+                                                         ">
                                             {{ $artist->name }}
                                         </x-dropdown-link>
                                     @endforeach
@@ -106,9 +105,9 @@
                                 <x-slot name="content">
                                     @foreach ($categories as $category)
                                         <x-dropdown-link href="#" @click.prevent="
-                                                        $refs.categoryInput.value = {{ $category->id }};
-                                                        selectedCategoryName = '{{ $category->name }}';
-                                                     ">
+                                                            $refs.categoryInput.value = {{ $category->id }};
+                                                            selectedCategoryName = '{{ $category->name }}';
+                                                         ">
                                             {{ $category->name }}
                                         </x-dropdown-link>
                                     @endforeach
@@ -153,7 +152,7 @@
                             @enderror
                         </div>
 
-                        
+
                         {{-- Status --}}
                         <div class="sm:col-span-4">
                             <x-input-label>Status</x-input-label>
@@ -171,15 +170,15 @@
                             @enderror
                         </div>
 
-
+                    </div>
+                    <div class="mt-0 flex items-center justify-end gap-x-6">
+                        <button type="button" action="{{ route('artworks.index') }}"
+                            class="text-sm/6 font-semibold text-gray-900">Cancel</button>
+                        <x-primary-button type="submit">Save</x-primary-button>
                     </div>
                 </div>
 
 
-                <div class="mt-6 flex items-center justify-end gap-x-6">
-                    <button type="button" action="{{ route('artworks.index') }}" class="text-sm/6 font-semibold text-gray-900">Cancel</button>
-                    <x-primary-button type="submit">Save</x-primary-button>
-                </div>
         </form>
     </x-card-container>
 
@@ -207,8 +206,5 @@
             }
         });
     </script>
-
-
-
 
 </x-app-layout>
