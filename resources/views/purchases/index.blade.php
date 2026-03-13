@@ -7,7 +7,7 @@
         </div>
     </x-slot>
 
-  <div class="mx-auto max-w-7xl px-4 pt-2 pb-6 sm:px-6 lg:px-8 ">
+  <div class="mx-auto max-w-7xl px-4 pt-2 pb-6 sm:px-6 lg:px-8 mt-4 ">
 
 
             @if($purchases->count())
@@ -36,17 +36,21 @@
 
                             {{-- Purchase Status --}}
                             <p class="mt-1 text-sm">
+ 
 
                                 @if($purchase->status == 'to_ship')
                                     <span class="text-yellow-600 font-semibold">
                                         To be shipped
                                     </span>
+                                @elseif($purchase->status == 'to_deliver')
+                                    <span class="text-fuchsia-600 font-semibold">
+                                        To be delivered
                                 @elseif($purchase->status == 'completed')
-                                    <span class="text-green-600 font-semibold">
+                                    <span class="text-lime-600 font-semibold">
                                         Completed
                                     </span>
                                 @else
-                                    <span class="text-gray-500">
+                                    <span class="text-red-600 font-semibold">
                                         {{ ucfirst($purchase->status) }}
                                     </span>
                                 @endif

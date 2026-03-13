@@ -33,7 +33,7 @@
                 @role('user')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('purchases.index')" :active="request()->routeIs('purchases.*')">
-                        {{ __('Order History') }}
+                        {{ __('Order') }}
                     </x-nav-link>
                 </div>
                 @endrole
@@ -48,7 +48,7 @@
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('purchases.list')" :active="request()->routeIs('purchases.*')">
-                        {{ __('Purchase History') }}
+                        {{ __('Purchase') }}
                     </x-nav-link>
                 </div>
                 @endrole

@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center w-full">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('User Purchase') }}
+                {{ __('User Purchase History') }}
             </h2>
         </div>
 
@@ -42,7 +42,7 @@
                                 @elseif($purchase->status === 'completed')
                                     <span class="text-lime-600 font-semibold">Completed</span>
                                 @elseif($purchase->status === 'cancelled')
-                                    <span class="text-orange-600 font-semibold">Cancelled</span>
+                                    <span class="text-red-600 font-semibold">Cancelled</span>
                                 @endif
                             </td>
 
@@ -116,7 +116,7 @@
                                                                         class="text-lime-600 font-semibold mt-3 inline-block">Completed</span>
                                                                 @elseif($purchase->status === 'cancelled')
                                                                     <span
-                                                                        class="text-orange-600 font-semibold mt-3 inline-block">Cancelled</span>
+                                                                        class="text-red-600 font-semibold mt-3 inline-block">Cancelled</span>
                                                                 @endif
 
 
