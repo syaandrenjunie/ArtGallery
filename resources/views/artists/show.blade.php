@@ -21,9 +21,9 @@
         @role('admin')
         <p class="mt-6">
             <a href="{{ route('artists.edit', $artist->id) }}">
-                <x-primary-button>
+                <x-edit-button>
                     Edit Artist
-                </x-primary-button>
+                </x-edit-button>
             </a>
         </p>
         @endrole

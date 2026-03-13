@@ -87,9 +87,9 @@
                     <a href="{{ route('artists.show', $artist) }}" class="text-sm text-gray-600 hover:text-gray-900">
                         Cancel
                     </a>
-                    <x-primary-button>
+                    <x-save-button>
                         Save
-                    </x-primary-button>
+                    </x-save-button>
                 </div>
 
             </div>

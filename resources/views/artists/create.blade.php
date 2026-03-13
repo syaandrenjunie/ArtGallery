@@ -111,9 +111,9 @@
               Cancel
           </a>
 
-          <x-primary-button>
+          <x-save-button>
               Save Artist
-          </x-primary-button>
+          </x-save-button>
       </div>
     </form>
 

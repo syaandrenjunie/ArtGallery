@@ -17,13 +17,12 @@
     </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl px-4 pt-2 pb-6 sm:px-6 lg:px-8">
 
-
-<div id="search-artists">
+            <div id="search-artists">
                 <artist-search></artist-search>
             </div>
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
                 <div id="blade-artist-list">
@@ -44,41 +43,7 @@
                         {{ $artists->links() }}
                     </div>
 
-                </div>
-
-                <!-- <script>
-                    document.addEventListener('DOMContentLoaded', async () => {
-                        try {
-                            // 1. Call API
-                            const response = await fetch('/api/artists');
-
-                            // 2. Convert response to JSON
-                            const artists = await response.json();
-
-                            // 3. Find container
-                            const container = document.getElementById('blade-artist-list');
-
-                            // 4. Render artists
-                            artists.forEach(artist => {
-                                const div = document.createElement('div');
-                                div.style.marginBottom = '1rem';
-
-                                div.innerHTML = `
-                                    <strong>${artist.name}</strong><br>
-                                    <small>${artist.email}</small>
-                                `;
-
-                                container.appendChild(div);
-                            });
-
-                        } catch (error) {
-                            console.error('Failed to load artists:', error);
-                        }
-                    });
-                </script> -->
-
-
+                </div>           
             </div>
         </div>
-    </div>
 </x-app-layout>
