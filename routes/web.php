@@ -3,9 +3,9 @@
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,6 +21,20 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+Route::prefix('users')->name('users.')->middleware(['auth', 'role:admin'])->controller(UserController::class)->group(function () {
+
+    Route::get('/', 'index')->name('index');
+    Route::get('/create', 'create')->name('create');
+    Route::post('/', 'store')->name('store');
+    Route::get('/{user}', 'show')->name('show');
+    Route::get('/{user}/edit', 'edit')->name('edit');
+    Route::patch('/{user}', 'update')->name('update');
+    Route::delete('/{user}', 'destroy')->name('destroy');
+
+});
+
 
 Route::prefix('artists')->name('artists.')->controller(ArtistController::class)->group(function () {
 
@@ -57,8 +71,8 @@ Route::prefix('categories')->name('categories.')->middleware(['auth', 'role:admi
 
 Route::prefix('artworks')->name('artworks.')->controller(ArtworkController::class)->group(function () {
 
-    // Only Admin can create / edit / delete
-    Route::middleware(['auth', 'role:admin'])->group(function () {
+    // Admin and artist can create / edit / delete
+    Route::middleware(['auth', 'role:admin|artist'])->group(function () {
         Route::get('/create', 'create')->name('create');
         Route::post('/', 'store')->name('store');
         Route::get('/{artwork}/edit', 'edit')->name('edit');
@@ -70,7 +84,7 @@ Route::prefix('artworks')->name('artworks.')->controller(ArtworkController::clas
     Route::middleware('auth')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/{artwork}', 'show')->name('show');
-                Route::get('/{artwork}/chat', 'chat')->name('chat');
+        Route::get('/{artwork}/chat', 'chat')->name('chat');
 
     });
 

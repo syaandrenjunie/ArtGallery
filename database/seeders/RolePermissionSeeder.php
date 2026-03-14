@@ -13,6 +13,7 @@ class RolePermissionSeeder extends Seeder
         // create roles
         $admin = Role::firstOrCreate(['name' => 'admin']);
         $user = Role::firstOrCreate(['name' => 'user']);
+        $artist = Role::firstOrCreate(['name' => 'artist']);
 
 
         // permissions for artist module
@@ -46,6 +47,15 @@ class RolePermissionSeeder extends Seeder
         $user->givePermissionTo([
             'view artist',
             'view artwork',
+        ]);
+
+        $artist->givePermissionTo([
+            'create artwork',
+            'edit artwork',
+            'delete artwork',
+            'view artwork',
+            'view artist'.
+            
         ]);
     }
 }
