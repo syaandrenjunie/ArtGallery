@@ -7,13 +7,13 @@
         {{ __('Artworks Listing') }}
       </h2>
 
-      @role('admin')
-      <a href="{{ route('artworks.create') }}">
-        <x-primary-button>
-          + Create Artwork
-        </x-primary-button>
-      </a>
-      @endrole
+      @hasanyrole('artist|admin')
+<a href="{{ route('artworks.create') }}">
+    <x-primary-button>
+        + Create Artwork
+    </x-primary-button>
+</a>
+@endhasanyrole
 
     </div>
   </x-slot>

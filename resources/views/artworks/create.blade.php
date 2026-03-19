@@ -47,42 +47,52 @@
                         </div>
 
                         {{-- Artist --}}
+                        @role('admin')
+
                         <div class="sm:col-span-4" x-data="{ selectedArtistName: 'Select an artist' }">
-                            <x-input-label class="block text-sm font-medium text-gray-900 mb-1">Artist
-                                Name</x-input-label>
+                            <x-input-label class="block text-sm font-medium text-gray-900 mb-1">
+                                Artist Name
+                            </x-input-label>
 
                             <x-dropdown align="left" width="48">
                                 <x-slot name="trigger">
                                     <button type="button"
                                         class="inline-flex justify-between w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm hover:bg-gray-50">
                                         <span x-text="selectedArtistName"></span>
-                                        <svg class="size-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"
-                                                clip-rule="evenodd" />
-                                        </svg>
                                     </button>
                                 </x-slot>
 
                                 <x-slot name="content">
                                     @foreach ($artists as $artist)
-                                        <x-dropdown-link href="#" @click.prevent="
-                                                            $refs.artistInput.value = {{ $artist->id }};
-                                                            selectedArtistName = '{{ $artist->name }}';
-                                                         ">
-                                            {{ $artist->name }}
-                                        </x-dropdown-link>
+                                                        <x-dropdown-link href="#" @click.prevent="
+                                            $refs.artistInput.value = {{ $artist->id }};
+                                            selectedArtistName = '{{ $artist->name }}';
+                                        ">
+                                                            {{ $artist->name }}
+                                                        </x-dropdown-link>
                                     @endforeach
                                 </x-slot>
                             </x-dropdown>
 
-                            <!-- Hidden input to save the selected dropdown input-->
                             <input type="hidden" name="artist_id" x-ref="artistInput" required>
 
-                            @error('artist_id')
-                                <p class="text-xs text-red-500 font-semibold">{{ $message }}</p>
-                            @enderror
                         </div>
+
+                        @endrole
+
+                        @role('artist')
+
+                        <div class="sm:col-span-4">
+                            <x-input-label class="block text-sm font-medium text-gray-900 mb-1">
+                                Artist
+                            </x-input-label>
+
+                            <p class="text-gray-700">{{ auth()->user()->artist->name }}</p>
+
+                            <input type="hidden" name="artist_id" value="{{ auth()->user()->artist->id }}">
+                        </div>
+
+                        @endrole
 
 
                         {{-- Category --}}
@@ -105,9 +115,9 @@
                                 <x-slot name="content">
                                     @foreach ($categories as $category)
                                         <x-dropdown-link href="#" @click.prevent="
-                                                            $refs.categoryInput.value = {{ $category->id }};
-                                                            selectedCategoryName = '{{ $category->name }}';
-                                                         ">
+                                                                $refs.categoryInput.value = {{ $category->id }};
+                                                                selectedCategoryName = '{{ $category->name }}';
+                                                             ">
                                             {{ $category->name }}
                                         </x-dropdown-link>
                                     @endforeach
@@ -169,6 +179,8 @@
                                 <p class="text-xs text-red-500 font-semibold">{{ $message }}</p>
                             @enderror
                         </div>
+
+
 
                     </div>
                     <div class="mt-0 flex items-center justify-end gap-x-6">

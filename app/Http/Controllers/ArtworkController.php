@@ -7,9 +7,12 @@ use App\Models\Artwork;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ArtworkController extends Controller
 {
+
+    use AuthorizesRequests;
     public function index(Request $request)
     {
         $artists = Artist::all();
@@ -33,15 +36,15 @@ class ArtworkController extends Controller
 
     public function create()
     {
+        if (auth()->user()->hasRole('admin')) {
+            $artists = Artist::orderBy('name')->get(); // admin sees all artists
+        } else {
+            $artists = Artist::where('user_id', auth()->id())->get(); // artist sees only their own
+        }
 
-        $artists = Artist::all();
         $categories = Category::all();
 
-        return view(
-            'artworks.create',
-            compact('artists', 'categories')
-        );
-
+        return view('artworks.create', compact('artists', 'categories'));
     }
 
     public function store(Request $request)
@@ -86,6 +89,9 @@ class ArtworkController extends Controller
 
     public function edit(Artwork $artwork)
     {
+
+        $this->authorize('update', $artwork);
+
         $artists = Artist::all();
         $categories = Category::all();
 
@@ -96,6 +102,9 @@ class ArtworkController extends Controller
 
     public function update(Artwork $artwork)
     {
+
+        $this->authorize('update', $artwork);
+
         // Validate
         request()->validate([
             'title' => 'required|string|max:255',
@@ -139,6 +148,15 @@ class ArtworkController extends Controller
 
     public function destroy(Artwork $artwork)
     {
+
+        $this->authorize('delete', $artwork);
+            // Delete picture if exists
+            if ($artwork->picture) {
+                $oldPath = str_replace(asset('storage/'), '', $artwork->picture);
+                if (Storage::disk('public')->exists($oldPath)) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+            }
         $artwork->delete();
 
         //redirect
