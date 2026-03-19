@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artist;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -60,7 +61,23 @@ class UserController extends Controller
         'role' => 'required'
     ]);
 
+    // update role using Spatie
     $user->syncRoles([$request->role]);
+
+    // if role is artist, create artist profile
+    if ($request->role === 'artist') {
+
+    $user->artist()->firstOrCreate([
+        'name' => $user->name,
+        'email' => $user->email,
+        'contact' => $user->contact,
+    ]);
+
+} else {
+
+    $user->artist()->delete();
+
+}
 
     return redirect()->route('users.index')
         ->with('success', 'User role updated successfully');

@@ -52,15 +52,23 @@ class User extends Authenticatable
 
     //Relationships
 
-    public function favorites() {
+    public function favorites()
+    {
         return $this->belongsToMany(Artwork::class, 'favorites')->withTimestamps();
     }
 
 
     //Helper method
-    
-    public function hasFavorited($artworkId) {
+
+    public function hasFavorited($artworkId)
+    {
         return $this->favorites()->where('artwork_id', $artworkId)->exists();
         //to check if user favorited an artwork
+    }
+
+    //artist profile relationship
+    public function artist()
+    {
+        return $this->hasOne(Artist::class);
     }
 }
