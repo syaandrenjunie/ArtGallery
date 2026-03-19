@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Models\Artist;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class ArtistController extends Controller
 {
@@ -77,16 +78,43 @@ class ArtistController extends Controller
     }
 
     public function update(Request $request, Artist $artist)
-    {
-        $artist->update($request->except('picture'));
+{
+    // Validate
+    $request->validate([
+        'name'    => 'required|max:255',
+        'bio'     => 'max:255',
+        'email'   => 'email:rfc,dns|required',
+        'contact' => 'required',
+        'picture' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+    ]);
 
-        if ($request->hasFile('picture')) {
-            // handle upload later
+    // Handle picture upload
+    if ($request->hasFile('picture')) {
+        // Delete old picture if exists
+        if ($artist->picture) {
+            $oldPath = str_replace(asset('storage/') . '/', '', $artist->picture);
+            if (Storage::disk('public')->exists($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
         }
 
-        return response()->json([
-            'message' => 'Artist updated',
-            'artist' => $artist
-        ]);
+        // Store new picture and save full URL
+        $path = $request->file('picture')->store('artists', 'public');
+        $artist->picture = asset('storage/' . $path);
     }
+
+    // Update other fields
+    $artist->name    = $request->input('name');
+    $artist->bio     = $request->input('bio');
+    $artist->email   = $request->input('email');
+    $artist->contact = $request->input('contact');
+
+    // Persist
+    $artist->save();
+
+    return response()->json([
+        'message' => 'Artist updated',
+        'artist'  => $artist
+    ]);
+}
 }

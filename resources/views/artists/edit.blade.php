@@ -11,13 +11,13 @@
     <x-card-container>
 
 
-        <form id="artist-edit-form" class="space-y-6">
+        <form id="artist-edit-form" method="POST" action="{{ route('artists.update', $artist) }}" class="space-y-6"
+            enctype="multipart/form-data">
             @csrf
+            @method('PATCH')
 
             <div class="space-y-8">
-
                 <div id="vue-app"></div>
-
 
                 {{-- Name --}}
                 <div>
@@ -62,14 +62,15 @@
                     @enderror
                 </div>
 
-                <!-- {{-- Picture --}}
+                {{-- Picture --}}
                 <div>
-                    <x-input-label for="picture" class="block text-sm font-medium text-gray-900">Photo</x-input-label>
+                    <x-input-label for="picture" class="block text-sm font-medium text-gray-900">Profile
+                        Picture</x-input-label>
                     <input type="file" id="picture" name="picture" class="mt-1 block w-full text-sm text-gray-700" />
                     @error('picture')
                         <p class="text-xs text-red-500 font-semibold">{{ $message }}</p>
                     @enderror
-                </div> -->
+                </div>
 
             </div>
 
@@ -110,10 +111,9 @@
                 e.preventDefault();
 
                 const formData = new FormData(e.target);
+                formData.append('_method', 'PUT');
 
                 try {
-                    formData.append('_method', 'PUT');
-
                     await window.api.post(
                         '/artists/{{ $artist->id }}',
                         formData
@@ -128,7 +128,6 @@
                 }
             });
         </script>
-
 
     </x-card-container>
 </x-app-layout>

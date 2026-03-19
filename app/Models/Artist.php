@@ -14,5 +14,7 @@ class Artist extends Model
 
     protected $table = 'artists';
 
-    protected $fillable = [ 'name', 'bio', 'email', 'contact', 'picture'];
+    protected $fillable = [ 'name', 'bio', 'email', 'contact', 'picture', 'user_id'];
+
+    
 } 

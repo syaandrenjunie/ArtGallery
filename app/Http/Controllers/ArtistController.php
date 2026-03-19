@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Artist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ArtistController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
         $artists = Artist::latest('updated_at')->simplePaginate(10);
 
@@ -33,29 +35,39 @@ class ArtistController extends Controller
 
 
 
-    public function create() {
-        
+    public function create()
+    {
+
         return view('artists.create');
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         //validation
-        request()->validate( [
+        request()->validate([
             'name' => 'required|max:255',
             'bio' => 'max:255',
-            'email' => 'email:rfc,dns|required' ,   
-            'contact' =>  'required',
-            'picture' => 'extensions:jpg,png',
+            'email' => 'email:rfc,dns|required',
+            'contact' => 'required',
+            'picture' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 
+
         //create
-        Artist::create( [
+        $path = null;
+        if ($request->hasFile('picture')) {
+            // Store file in /storage/app/public/uploads
+            $path = $request->file('picture')->store('artists', 'public');
+        }
+
+        //create
+        Artist::create([
             'name' => request('name'),
             'bio' => request('bio'),
             'email' => request('email'),
             'contact' => request('contact'),
-            'picture' => request('picture'),
+            'picture' => $path,
         ]);
 
         //redirect
@@ -63,46 +75,60 @@ class ArtistController extends Controller
 
     }
 
-    public function show(Artist $artist) {
-        return view ('artists.show', [
+    public function show(Artist $artist)
+    {
+        return view('artists.show', [
             'artist' => $artist
         ]);
     }
 
-    public function edit(Artist $artist) {
+    public function edit(Artist $artist)
+    {
         return view('artists.edit', [
             'artist' => $artist
         ]);
 
     }
 
-    public function update(Artist $artist) {
-        //validate
-        request()->validate([
-            'name' => 'required|max:255',
-            'bio' => 'max:255',
-            'email' => 'email:rfc,dns|required' ,   
-            'contact' =>  'required',
-            'picture' => 'extensions:jpg,png',
-        ]);
+    public function update(Request $request, Artist $artist) {
+    // Validate
+    $request->validate([
+        'name'    => 'required|max:255',
+        'bio'     => 'max:255',
+        'email'   => 'email|required',
+        'contact' => 'required',
+        'picture' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+    ]);
 
-        //authorize on hold
+    // Handle picture upload
+    if ($request->hasFile('picture')) {
+        // Delete old picture if exists
+        if ($artist->picture) {
+            $oldPath = str_replace(asset('storage/') . '/', '', $artist->picture);
+            if (Storage::disk('public')->exists($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
+        }
 
-        //update
-        $artist->name = request('name');
-        $artist->bio = request('bio');
-        $artist->email = request('email');
-        $artist->contact = request('contact');
-        $artist->picture = request('picture');
-                
-        //persist
-        $artist->save();
-
-        //redirect
-        return redirect('/artists/'. $artist->id);
+        // Store new picture and save full URL (consistent with faker)
+        $path = $request->file('picture')->store('artists', 'public');
+        $artist->picture = asset('storage/' . $path);
     }
 
-    public function destroy(Artist $artist) {
+    // Update other fields
+    $artist->name    = $request->input('name');
+    $artist->bio     = $request->input('bio');
+    $artist->email   = $request->input('email');
+    $artist->contact = $request->input('contact');
+
+    // Persist
+    $artist->save();
+
+    return redirect('/artists/' . $artist->id);
+}
+
+    public function destroy(Artist $artist)
+    {
         $artist->delete();
 
         return redirect('/artists');
